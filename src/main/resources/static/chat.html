@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能助手</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="chat-page">
+<main class="chat-layout">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <span class="mini-brand-mark" aria-hidden="true">AI</span>
+                <span>智能助手</span>
+            </div>
+            <button id="new-conversation-button" class="new-chat-button" type="button">
+                <span aria-hidden="true">＋</span>
+                新建对话
+            </button>
+        </div>
+
+        <div class="history-heading">历史会话</div>
+        <nav id="conversation-list" class="conversation-list" aria-label="历史会话"></nav>
+    </aside>
+
+    <section class="chat-main">
+        <header class="chat-header">
+            <div>
+                <h1 id="conversation-title">AI 助手</h1>
+                <p>简单、专注的智能对话 Demo</p>
+            </div>
+            <span class="mock-badge">AI Chat</span>
+        </header>
+
+        <div id="message-list" class="message-list" aria-live="polite">
+            <div class="empty-state">
+                <div class="empty-icon" aria-hidden="true">✦</div>
+                <h2>你好，我是 AI 助手</h2>
+                <p>点击“新建对话”，然后输入你想了解的问题。</p>
+            </div>
+        </div>
+
+        <div class="composer-area">
+            <form id="chat-form" class="composer">
+                <label class="visually-hidden" for="message-input">输入消息</label>
+                <textarea id="message-input"
+                          rows="1"
+                          maxlength="4000"
+                          placeholder="输入消息，Enter 发送，Shift + Enter 换行"
+                          disabled></textarea>
+                <button id="send-button" class="send-button" type="submit" disabled>发送</button>
+            </form>
+            <p id="chat-error" class="chat-error" role="alert"></p>
+        </div>
+    </section>
+</main>
+
+<script src="/js/chat.js"></script>
+</body>
+</html>
+

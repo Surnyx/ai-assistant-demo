@@ -1,0 +1,31 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: ai-assistant-demo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:ai_assistant_demo}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jackson:
+    time-zone: Asia/Shanghai
+
+mybatis-plus:
+  configuration:
+    # 将数据库的 created_time 自动映射成 Java 的 createdTime
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+# 本地默认使用 Mock；生产环境通过 application-prod.yml 切换为真实 API。
+ai:
+  mock: ${AI_MOCK:true}
+  base-url: ${AI_BASE_URL:https://api.deepseek.com}
+  api-key: ${AI_API_KEY:}
+  model: ${AI_MODEL:deepseek-flash}
+  max-tokens: ${AI_MAX_TOKENS:800}
+  connect-timeout-seconds: ${AI_CONNECT_TIMEOUT_SECONDS:10}
+  read-timeout-seconds: ${AI_READ_TIMEOUT_SECONDS:60}

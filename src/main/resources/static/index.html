@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - AI 智能助手</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-page">
+<main class="login-card">
+    <div class="brand-mark" aria-hidden="true">AI</div>
+    <h1>AI 智能助手</h1>
+    <p class="login-subtitle">登录后开始你的智能对话</p>
+
+    <form id="login-form" class="login-form">
+        <label for="username">用户名</label>
+        <input id="username"
+               name="username"
+               type="text"
+               value="test"
+               maxlength="50"
+               autocomplete="username"
+               required>
+
+        <label for="password">密码</label>
+        <input id="password"
+               name="password"
+               type="password"
+               value="123456"
+               maxlength="100"
+               autocomplete="current-password"
+               required>
+
+        <p id="login-error" class="form-error" role="alert"></p>
+        <button id="login-button" class="primary-button" type="submit">登录</button>
+    </form>
+
+    <p class="demo-account">演示账号：test / 123456</p>
+</main>
+
+<script src="/js/login.js"></script>
+</body>
+</html>
+
