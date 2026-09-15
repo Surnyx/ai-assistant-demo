@@ -6,9 +6,10 @@ spring:
     name: ai-assistant-demo
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:ai_assistant_demo}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:}
+    # 优先读取 Railway MySQL 原生变量，本地运行时仍兼容原来的 DB_* 变量。
+    url: jdbc:mysql://${MYSQLHOST:${DB_HOST:localhost}}:${MYSQLPORT:${DB_PORT:3306}}/${MYSQLDATABASE:${DB_NAME:ai_assistant_demo}}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQLUSER:${DB_USERNAME:root}}
+    password: ${MYSQLPASSWORD:${DB_PASSWORD:}}
   jackson:
     time-zone: Asia/Shanghai
 
