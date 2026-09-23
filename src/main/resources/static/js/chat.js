@@ -12,12 +12,37 @@ const chatForm = document.querySelector('#chat-form');
 const messageInput = document.querySelector('#message-input');
 const sendButton = document.querySelector('#send-button');
 const chatError = document.querySelector('#chat-error');
+const sidebarToggle = document.querySelector('#sidebar-toggle');
+const sidebarClose = document.querySelector('#sidebar-close');
+const sidebarBackdrop = document.querySelector('#sidebar-backdrop');
+const coarsePointer = window.matchMedia('(pointer: coarse)');
 
 document.addEventListener('DOMContentLoaded', initializePage);
 newConversationButton.addEventListener('click', createConversation);
 chatForm.addEventListener('submit', sendMessage);
 messageInput.addEventListener('keydown', handleInputKeydown);
 messageInput.addEventListener('input', autoResizeInput);
+messageInput.addEventListener('focus', keepComposerVisible);
+sidebarToggle.addEventListener('click', () => setSidebarOpen(true));
+sidebarClose.addEventListener('click', () => setSidebarOpen(false));
+sidebarBackdrop.addEventListener('click', () => setSidebarOpen(false));
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+        setSidebarOpen(false);
+    }
+});
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 700) {
+        setSidebarOpen(false);
+    }
+});
+
+const viewport = window.visualViewport;
+if (viewport) {
+    viewport.addEventListener('resize', updateViewportHeight);
+    viewport.addEventListener('scroll', updateViewportHeight);
+}
+updateViewportHeight();
 
 async function initializePage() {
     try {
@@ -116,6 +141,7 @@ async function createConversation() {
         const conversation = await apiRequest('/api/conversations', { method: 'POST' });
         await refreshConversationList();
         await openConversation(conversation.id);
+        setSidebarOpen(false);
         messageInput.focus();
     } catch (error) {
         showError(error.message);
@@ -126,6 +152,7 @@ async function createConversation() {
 
 async function openConversation(conversationId) {
     clearError();
+    setSidebarOpen(false);
     state.currentConversationId = conversationId;
     renderConversationList();
 
@@ -309,7 +336,7 @@ function setComposerEnabled(enabled) {
 }
 
 function handleInputKeydown(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === 'Enter' && !event.shiftKey && !coarsePointer.matches) {
         event.preventDefault();
         chatForm.requestSubmit();
     }
@@ -322,6 +349,24 @@ function autoResizeInput() {
 
 function scrollToLatestMessage() {
     messageList.scrollTop = messageList.scrollHeight;
+}
+
+function setSidebarOpen(open) {
+    document.body.classList.toggle('sidebar-open', open);
+    sidebarToggle.setAttribute('aria-expanded', String(open));
+    sidebarBackdrop.hidden = !open;
+}
+
+function updateViewportHeight() {
+    const height = viewport ? viewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', `${Math.round(height)}px`);
+}
+
+function keepComposerVisible() {
+    window.requestAnimationFrame(() => {
+        updateViewportHeight();
+        scrollToLatestMessage();
+    });
 }
 
 function showError(message) {

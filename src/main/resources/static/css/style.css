@@ -11,6 +11,7 @@
     --white: #ffffff;
     --danger: #dc2626;
     --shadow: 0 14px 40px rgba(15, 23, 42, 0.12);
+    --app-height: 100dvh;
 }
 
 * {
@@ -23,6 +24,11 @@ body {
     min-height: 100%;
     font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
     color: var(--text);
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    overscroll-behavior: none;
 }
 
 button,
@@ -33,6 +39,7 @@ textarea {
 
 button {
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 button:disabled {
@@ -55,14 +62,17 @@ button:disabled {
 /* 登录页 */
 .login-page {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     place-items: center;
     min-height: 100vh;
-    padding: 24px;
+    min-height: 100dvh;
+    padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
     background: var(--page-bg);
 }
 
 .login-card {
-    width: min(100%, 400px);
+    width: 100%;
+    max-width: 400px;
     padding: 42px 38px 34px;
     background: var(--white);
     border: 1px solid var(--border);
@@ -118,6 +128,7 @@ button:disabled {
     border-radius: 9px;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
+    font-size: 16px;
 }
 
 .login-form input:focus,
@@ -158,6 +169,7 @@ button:disabled {
 /* 聊天页 */
 .chat-page {
     height: 100vh;
+    height: var(--app-height);
     overflow: hidden;
     background: var(--page-bg);
 }
@@ -166,13 +178,14 @@ button:disabled {
     display: grid;
     grid-template-columns: 270px minmax(0, 1fr);
     height: 100vh;
+    height: var(--app-height);
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: 22px 14px;
+    padding: max(22px, env(safe-area-inset-top)) 14px max(22px, env(safe-area-inset-bottom));
     color: #e5e7eb;
     background: var(--sidebar-bg);
 }
@@ -184,6 +197,12 @@ button:disabled {
     padding: 0 8px;
     font-size: 18px;
     font-weight: 700;
+}
+
+.sidebar-close,
+.menu-button,
+.sidebar-backdrop {
+    display: none;
 }
 
 .mini-brand-mark {
@@ -279,6 +298,7 @@ button:disabled {
     grid-template-rows: auto minmax(0, 1fr) auto;
     min-width: 0;
     height: 100vh;
+    height: var(--app-height);
     background: var(--white);
 }
 
@@ -287,8 +307,13 @@ button:disabled {
     align-items: center;
     justify-content: space-between;
     min-height: 76px;
-    padding: 15px 28px;
+    padding: max(15px, env(safe-area-inset-top)) max(28px, env(safe-area-inset-right)) 15px max(28px, env(safe-area-inset-left));
     border-bottom: 1px solid var(--border);
+}
+
+.chat-title-group {
+    min-width: 0;
+    flex: 1;
 }
 
 .chat-header h1 {
@@ -405,7 +430,7 @@ button:disabled {
 }
 
 .composer-area {
-    padding: 16px max(28px, calc((100% - 850px) / 2)) 12px;
+    padding: 16px max(28px, calc((100% - 850px) / 2)) max(12px, env(safe-area-inset-bottom));
     background: var(--white);
     border-top: 1px solid var(--border);
 }
@@ -426,6 +451,9 @@ button:disabled {
     border-radius: 11px;
     outline: none;
     line-height: 1.5;
+    overflow-y: auto;
+    font-size: 16px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .send-button {
@@ -445,17 +473,88 @@ button:disabled {
 }
 
 @media (max-width: 700px) {
+    .chat-page {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+    }
+
     .chat-layout {
-        grid-template-columns: 210px minmax(0, 1fr);
+        display: block;
+        position: relative;
     }
 
     .sidebar {
-        padding-inline: 10px;
+        position: fixed;
+        z-index: 30;
+        inset: 0 auto 0 0;
+        width: min(86vw, 320px);
+        height: var(--app-height);
+        padding-right: 14px;
+        padding-left: max(14px, env(safe-area-inset-left));
+        box-shadow: 14px 0 35px rgba(15, 23, 42, 0.28);
+        transform: translateX(-105%);
+        visibility: hidden;
+        transition: transform 0.2s ease, visibility 0.2s;
+    }
+
+    .sidebar-open .sidebar {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    .sidebar-close,
+    .menu-button {
+        display: grid;
+        place-items: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: 11px;
+    }
+
+    .sidebar-close {
+        margin-left: auto;
+        color: #d1d5db;
+        background: var(--sidebar-hover);
+        font-size: 25px;
+    }
+
+    .menu-button {
+        margin-right: 10px;
+        color: var(--primary-dark);
+        background: var(--primary-soft);
+        font-size: 20px;
+    }
+
+    .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        z-index: 20;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: rgba(15, 23, 42, 0.48);
+        -webkit-backdrop-filter: blur(2px);
+        backdrop-filter: blur(2px);
+    }
+
+    .sidebar-backdrop[hidden] {
+        display: none;
+    }
+
+    .chat-main {
+        width: 100%;
     }
 
     .message-list,
     .composer-area {
-        padding-inline: 16px;
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-left: max(16px, env(safe-area-inset-left));
     }
 
     .message-bubble {
@@ -466,29 +565,76 @@ button:disabled {
     .chat-header p {
         display: none;
     }
-}
-
-@media (max-width: 520px) {
-    .chat-layout {
-        grid-template-columns: 150px minmax(0, 1fr);
-    }
-
-    .sidebar-brand span:last-child,
-    .history-heading {
-        font-size: 11px;
-    }
-
-    .new-chat-button {
-        padding-inline: 6px;
-        font-size: 13px;
-    }
 
     .chat-header {
-        padding-inline: 16px;
+        min-height: 64px;
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-left: max(12px, env(safe-area-inset-left));
+    }
+
+    .conversation-select,
+    .new-chat-button {
+        min-height: 44px;
+    }
+
+    .conversation-delete {
+        width: 44px;
+        height: 44px;
     }
 
     .send-button {
-        padding-inline: 13px;
+        min-width: 60px;
+        padding-inline: 14px;
     }
 }
 
+@media (max-width: 520px) {
+    .login-page {
+        align-items: start;
+        padding-top: max(52px, env(safe-area-inset-top));
+    }
+
+    .login-card {
+        padding: 34px 22px 28px;
+        border-radius: 16px;
+    }
+
+    .message-list {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .message-row {
+        gap: 8px;
+        margin-bottom: 17px;
+    }
+
+    .message-avatar {
+        flex-basis: 30px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .message-bubble {
+        max-width: calc(100% - 38px);
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+
+    .composer-area {
+        padding-top: 10px;
+    }
+
+    .composer {
+        gap: 8px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

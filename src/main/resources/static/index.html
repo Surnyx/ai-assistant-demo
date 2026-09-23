@@ -2,8 +2,17 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AI 助手">
+    <meta name="format-detection" content="telephone=no">
     <title>登录 - AI 智能助手</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="login-page">
@@ -26,7 +35,6 @@
         <input id="password"
                name="password"
                type="password"
-               value="123456"
                maxlength="100"
                autocomplete="current-password"
                required>
@@ -38,7 +46,7 @@
     <p class="demo-account">演示账号：test / 123456</p>
 </main>
 
+<script src="/js/pwa.js"></script>
 <script src="/js/login.js"></script>
 </body>
 </html>
-

@@ -11,6 +11,7 @@
 - 调用兼容 OpenAI Chat Completions 格式的大模型接口
 - 默认 Mock 模式，无 API Key 也可以完整演示
 - 原生前端，不依赖 Vue、React 或 Node.js 运行环境
+- 支持安装到 iPhone 主屏幕并以 PWA 独立窗口运行
 
 ## 技术栈
 
@@ -107,6 +108,12 @@ AI_MAX_TOKENS=800
 ```
 
 API Key 只通过环境变量传入，不要提交到代码仓库。
+
+## iPhone PWA
+
+项目包含 `manifest.json`、Service Worker、iOS Meta 标签和 180/192/512 像素 App 图标。移动端使用抽屉式历史会话栏，并针对 Safari 安全区域、动态视口和虚拟键盘进行了适配。
+
+PWA 只缓存静态应用外壳，不缓存 `/api/**` 下的登录信息、聊天记录或其他私人数据。完整安装步骤见 [IPHONE_PWA.md](IPHONE_PWA.md)。
 
 ## Railway 部署
 
